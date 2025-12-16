@@ -13,7 +13,7 @@ class Note {
     boolean pinned;
     String timestamp;
 }
-
+// NotesApp handles backend APIs using Spark Java
 public class NotesApp {
 
     static Map<Integer, Note> notes = new HashMap<>();
