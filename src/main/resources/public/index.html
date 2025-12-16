@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Notes Sharing App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <h1>📘 Student Notes Sharing App</h1>
+    <p class="subtitle">Organize, pin, and share notes efficiently</p>
+
+    <!-- Add Note -->
+    <div class="add-note glass">
+        <input id="userName" placeholder="Your Name">
+        <input id="title" placeholder="Note Title">
+
+        <select id="category">
+            <option value="Project">Project</option>
+            <option value="Assignment">Assignment</option>
+            <option value="Exam">Exam</option>
+            <option value="Personal">Personal</option>
+        </select>
+
+        <textarea id="content" placeholder="Write your note here..."></textarea>
+
+        <label class="pin-box">
+            <input type="checkbox" id="pin"> Pin this note
+        </label>
+
+        <button onclick="addNote()">Add Note</button>
+    </div>
+
+    <!-- Search -->
+    <input id="search" class="search glass" placeholder="Search notes..." onkeyup="loadNotes()">
+
+    <!-- Notes -->
+    <div id="notes"></div>
+
+</div>
+
+<script>
+function addNote() {
+    fetch('/notes', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json; charset=UTF-8'},
+        body: JSON.stringify({
+            userName: userName.value,
+            title: title.value,
+            content: content.value,
+            category: category.value,
+            pinned: pin.checked
+        })
+    }).then(() => {
+        title.value = content.value = "";
+        pin.checked = false;
+        loadNotes();
+    });
+}
+
+function loadNotes() {
+    const q = search.value || "";
+    fetch('/notes?q=' + q)
+        .then(r => r.json())
+        .then(data => {
+            let html = "";
+            data.forEach(n => {
+                html += `
+                <div class="note glass ${n.pinned ? 'pinned' : ''}">
+                    <div class="note-header">
+                        <h3>${n.title}</h3>
+                        <span class="category">${n.category}</span>
+                    </div>
+
+                    <p>${n.content}</p>
+
+                    <small>By ${n.userName} • ${n.timestamp}</small>
+
+                    <div class="actions">
+                        <button onclick="togglePin(${n.id})">Pin</button>
+                        <button onclick="editNote(${n.id})">Edit</button>
+                        <button onclick="del(${n.id})">Delete</button>
+                    </div>
+                </div>`;
+            });
+            notes.innerHTML = html;
+        });
+}
+
+function del(id) {
+    fetch('/notes/' + id, {method:'DELETE'}).then(loadNotes);
+}
+
+function togglePin(id) {
+    fetch('/notes/' + id + '/pin', {method:'PUT'}).then(loadNotes);
+}
+
+function editNote(id) {
+    const newContent = prompt("Edit note content:");
+    if (!newContent) return;
+
+    fetch('/notes/' + id, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json; charset=UTF-8'},
+        body: JSON.stringify({content:newContent})
+    }).then(loadNotes);
+}
+
+loadNotes();
+</script>
+
+</body>
+</html>
