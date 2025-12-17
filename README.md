@@ -43,12 +43,19 @@ mvn clean package
 java -jar target/student-notes-sharing-1.0.jar
 ### Open in Browser
 http://localhost:4567
+----
+
+## **Run the Project inside container**
+
 ### Build Docker Image
 docker build -t student-notes-app .
 ### Run Docker Container
 docker run -p 4567:4567 student-notes-app
 ### Access the Application
 http://localhost:4567
+
+----
+
 🔧 Git and GitHub Operations Used
 git init
 git add .
@@ -59,6 +66,9 @@ git merge feature
 git push origin main
 git pull origin main
 git clone <repository-url>
+
+----
+
 ## Screenshots
 ![Home](home.png)
 ![Add](addnote.png)
@@ -66,4 +76,26 @@ git clone <repository-url>
 ![Pin](pinnote.png)
 ![Edit](editnote.png)
 ![Search](searchnote.png)
+----
+
+
+## Git Workflow Screenshots
+
+### Commits
+![Commits](commits.png)
+
+### Branches
+![Branches](branches.png)
+
+### Merge Conflict
+![Merge Conflict](mergeconflict.png)
+
+
+----
+
+✅ Conclusion
+
+This project demonstrates the development and deployment of a Java-based web application using modern development tools.
+Maven simplifies the build process, Docker ensures consistent deployment across environments, and Git/GitHub enable effective version control.
+The application follows industry standards and is suitable for real-world deployment.
 
