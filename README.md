@@ -60,6 +60,10 @@ git push origin main
 git pull origin main
 git clone <repository-url>
 ## Screenshots
+![Home](home.png)
+![Add](addnote.png)
+![View](viewnote.png)
+![Pin](pinnote.png)
+![Edit](editnote.png)
+![Search](searchnote.png)
 
-### 🏠 Home Page
-![Home UI] 
